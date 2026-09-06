@@ -90,9 +90,6 @@ Paste the following script into the **User Data** section.
 The following script is used during EC2 launch to create an Ansible user and enable password authentication.
 
 ```bash
-# Create ansible user
-sudo useradd ansible
-
 #!/bin/bash
 
 # Create ansible user
