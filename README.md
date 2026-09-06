@@ -367,7 +367,119 @@ db2 | SUCCESS => {
 ✅ Congratulations! You have successfully configured Ansible with SSH key-based authentication and can now manage all servers without entering a password each time.
 
 ---
+---
 
+# 🧩 Ansible Modules
+
+Ansible modules are the building blocks used to perform tasks on managed hosts. Below are some commonly used modules with practical examples.
+
+---
+
+## 📌 Shell Module
+
+Execute shell commands on remote servers.
+
+```bash
+ansible all -i inventory.ini -m shell -a "cat /etc/hostname"
+```
+
+Sample Output:
+
+```text
+web1 | CHANGED | rc=0 >>
+ip-172-31-1-10
+
+web2 | CHANGED | rc=0 >>
+ip-172-31-1-20
+```
+
+---
+
+## 📌 Command Module
+
+Execute commands on remote servers.
+
+```bash
+ansible all -i inventory.ini -m command -a "df -h"
+```
+
+The `command` module is more secure than `shell` because it does not process shell operators such as `|`, `>`, or `&&`.
+
+---
+
+## 📌 Service Module
+
+Check or manage services on remote hosts.
+
+```bash
+ansible all -i inventory.ini -m service -a "name=httpd"
+```
+
+Start a service:
+
+```bash
+ansible all -i inventory.ini -m service -a "name=httpd state=started"
+```
+
+Enable service at boot:
+
+```bash
+ansible all -i inventory.ini -m service -a "name=httpd enabled=yes"
+```
+
+---
+
+## 📌 Shell Module Example
+
+Check server uptime.
+
+```bash
+ansible all -i inventory.ini -m shell -a "uptime"
+```
+
+Sample Output:
+
+```text
+web1 | CHANGED | rc=0 >>
+11:25:32 up 2 days, 3:15, 2 users, load average: 0.01, 0.02, 0.00
+```
+
+---
+
+## 📌 File Module
+
+Create a file on all managed hosts.
+
+```bash
+ansible all -i inventory.ini -m file -a "path=/tmp/testfile state=touch mode=0755"
+```
+
+Verify the file:
+
+```bash
+ansible all -i inventory.ini -m shell -a "ls -l /tmp/testfile"
+```
+
+Sample Output:
+
+```text
+-rwxr-xr-x 1 root root 0 Sep 06 12:30 /tmp/testfile
+```
+
+---
+
+## ✅ Modules Covered
+
+| Module | Purpose |
+|----------|----------|
+| shell | Execute shell commands |
+| command | Execute commands securely |
+| service | Manage Linux services |
+| file | Create, modify, or delete files/directories |
+
+These modules form the foundation of day-to-day Ansible administration and automation tasks.
+
+---
 ## 🚀 Future Enhancements
 
 - Ansible Roles
