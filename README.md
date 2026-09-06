@@ -140,7 +140,107 @@ sudo dnf install ansible-core -y
 ansible --version
 ansible-playbook --version
 ```
+---
 
+## ⚙️ Configure Ansible
+
+### Disable Host Key Checking
+
+Create or edit the Ansible configuration file:
+
+```bash
+vi ansible.cfg
+```
+
+Add the following content:
+
+```ini
+[defaults]
+host_key_checking = False
+```
+
+This prevents SSH host key verification prompts when connecting to new servers.
+
+---
+
+## 📋 Create Inventory File
+
+Create the inventory file and add your instance IP addresses:
+
+```bash
+vi inventory.ini
+```
+
+```ini
+[webserver]
+web1 ansible_host=3.85.18.51
+web2 ansible_host=34.228.37.22
+
+[dbserver]
+db1 ansible_host=18.209.65.23
+db2 ansible_host=54.235.52.68
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+```
+
+### Why Specify Python Interpreter?
+
+Adding the following line:
+
+```ini
+ansible_python_interpreter=/usr/bin/python3
+```
+
+helps eliminate warnings similar to:
+
+```text
+[WARNING]: Platform linux on host db2 is using the discovered Python interpreter at /usr/bin/python3.x, but future installation of another Python interpreter could change the meaning of that path.
+```
+
+---
+
+## 🚀 First Ansible Command
+
+Verify connectivityaged hosts using the Ansible user and password authentication:
+
+```bash
+ansible all -i inventory.ini -m ping -u ansible -k
+```
+
+You will be prompted for the SSH password:
+
+```text
+SSH password:
+```
+
+Expected output:
+
+```text
+web1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+web2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+db1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+db2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+✅ If you receive **pong** from all hosts, your Ansible control node is successfully communicating with the managed servers.
+
+---
 ## 🚀 Future Enhancements
 
 - Ansible Roles
