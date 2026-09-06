@@ -76,3 +76,126 @@ Proceed without a key pair
 ### Configure Security Group
 
 ```text
+Allow SSH access (Port 22)
+```
+
+---
+
+## 📝 Add User Data
+
+Paste the following script into the **User Data** section.
+
+### EC2 User Data Script
+
+The following script is used during EC2 launch to create an Ansible user and enable password authentication.
+
+```bash
+#!/bin/bash
+
+# Create ansible user
+useradd -m -s /bin/bash ansible
+
+# Set password
+echo "ansible:ansible123" | chpasswd
+
+# Add to wheel group
+usermod -aG wheel ansible
+
+# Passwordless sudo
+echo "ansible ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ansible
+chmod 440 /etc/sudoers.d/ansible
+
+# Enable password authentication
+sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Disable challenge response
+sed -i 's/^ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+
+# Ensure PAM is enabled
+sed -i 's/^UsePAM.*/UsePAM yes/' /etc/ssh/sshd_config
+
+# Restart SSH
+systemctl restart sshd
+```
+
+---
+
+## 🔐 Connect Using SSH
+
+After the instance is running, copy the Public IPv4 address.
+
+From your terminal:
+
+```bash
+ssh ansible@<PUBLIC_IP>
+```
+
+Example:
+
+```bash
+ssh ansible@54.xx.xx.xx
+```
+
+---
+
+## ⚙️ Install Ansible
+
+*Steps will be added here.*
+
+---
+
+## 🚀 Future Enhancements
+
+- Ansible Roles
+- Dynamic AWS Inventory
+- Ansible Vault
+- Nginx Deployment
+- Apache Deployment
+- User Management Playbooks
+- GitHub Actions CI/CD
+- Terraform Integration
+- Multi-EC2 Management
+
+---
+
+## 🎯 Learning Objectives
+
+After complet*ng this lab, you will be able to:
+*- Create AWS EC2 instances
+- Confi*ure SSH access
+- Install and confi*ure Ansible
+- Manage Linux servers using Ansible
+- Execute Playbooks
+- Use Inventory files
+- Store Infrastructure as Code (IaC) in GitHub
+
+---
+
+## 📂 Project Structure
+
+```text
+ansible-lab/
+│
+├── README.md
+├── inventory
+├── ansible.cfg
+├── playbooks/
+│   └── site.yml
+├── roles/
+└── group_vars/
+```
+
+---
+
+## 👨‍💻 Author
+
+**Rushikesh Pawar**  
+Senior Consultant | Azure & DevOps Enthusiast
+
+https://img.shields.io/badge/GitHub-rushikeshpawar-blue?style=for-the-badge&logo=github](https://github.com/)
+
+---
+
+⭐ If this project helped you learn Ansible, consider giving it a **Star** on GitHub.
+
+Happy Automating! 🚀
