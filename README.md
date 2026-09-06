@@ -383,15 +383,6 @@ Execute shell commands on remote servers.
 ansible all -i inventory.ini -m shell -a "cat /etc/hostname"
 ```
 
-Sample Output:
-
-```text
-web1 | CHANGED | rc=0 >>
-ip-172-31-1-10
-
-web2 | CHANGED | rc=0 >>
-ip-172-31-1-20
-```
 
 ---
 
@@ -437,13 +428,6 @@ Check server uptime.
 ansible all -i inventory.ini -m shell -a "uptime"
 ```
 
-Sample Output:
-
-```text
-web1 | CHANGED | rc=0 >>
-11:25:32 up 2 days, 3:15, 2 users, load average: 0.01, 0.02, 0.00
-```
-
 ---
 
 ## 📌 File Module
@@ -458,12 +442,6 @@ Verify the file:
 
 ```bash
 ansible all -i inventory.ini -m shell -a "ls -l /tmp/testfile"
-```
-
-Sample Output:
-
-```text
--rwxr-xr-x 1 root root 0 Sep 06 12:30 /tmp/testfile
 ```
 
 ---
