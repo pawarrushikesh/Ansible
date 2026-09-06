@@ -139,7 +139,6 @@ sudo dnf update -y
 sudo dnf install ansible-core -y
 ansible --version
 ansible-playbook --version
----
 ```
 
 ## 🚀 Future Enhancements
