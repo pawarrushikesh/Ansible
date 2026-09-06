@@ -90,6 +90,9 @@ Paste the following script into the **User Data** section.
 The following script is used during EC2 launch to create an Ansible user and enable password authentication.
 
 ```bash
+# Create ansible user
+sudo useradd ansible
+
 #!/bin/bash
 
 # Create ansible user
@@ -98,24 +101,15 @@ useradd -m -s /bin/bash ansible
 # Set password
 echo "ansible:ansible123" | chpasswd
 
-# Add to wheel group
-usermod -aG wheel ansible
-
-# Passwordless sudo
-echo "ansible ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ansible
-chmod 440 /etc/sudoers.d/ansible
+# Grant passwordless sudo
+echo 'ansible ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Enable password authentication
-sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
-# Disable challenge response
-sed -i 's/^ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
-
-# Ensure PAM is enabled
-sed -i 's/^UsePAM.*/UsePAM yes/' /etc/ssh/sshd_config
-
-# Restart SSH
-systemctl restart sshd
+# Restart SSH service
+sudo systemctl restart sshd
 ```
 
 ---
@@ -140,9 +134,13 @@ ssh ansible@54.xx.xx.xx
 
 ## ⚙️ Install Ansible
 
-*Steps will be added here.*
-
+```bash
+sudo dnf update -y
+sudo dnf install ansible-core -y
+ansible --version
+ansible-playbook --version
 ---
+```
 
 ## 🚀 Future Enhancements
 
