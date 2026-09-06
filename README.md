@@ -241,6 +241,133 @@ db2 | SUCCESS => {
 ✅ If you receive **pong** from all hosts, your Ansible control node is successfully communicating with the managed servers.
 
 ---
+---
+
+## 🔑 Configure Passwordless Authentication
+
+### Generate SSH Key on the Ansible Control Node
+
+Generate an SSH key pair:
+
+```bash
+ssh-keygen
+```
+
+When prompted, simply press **Enter** three times:
+
+```text
+Enter file in which to save the key (...) : Enter
+Enter passphrase (empty for no passphrase): Enter
+Enter same passphrase again: Enter
+```
+
+This creates:
+
+```text
+~/.ssh/id_rsa
+~/.ssh/id_rsa.pub
+```
+
+---
+
+### Create Script to Copy SSH Key to All Servers
+
+Create a script:
+
+```bash
+vi ssh-copy-id.sh
+```
+
+Add the following content:
+
+```bash
+#!/bin/bash
+
+for host in $(awk -F= '/ansible_host/ {print $2}' inventory.ini)
+do
+    ssh-copy-id ansible@$host
+done
+```
+
+Save and exit the file.
+
+---
+
+### Give Execute Permission
+
+```bash
+chmod 777 ssh-copy-id.sh
+```
+
+---
+
+### Run the Script
+
+```bash
+./ssh-copy-id.sh
+```
+
+Enter the **ansible user password** whenever prompted.
+
+Example:
+
+```text
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s)
+ansible@3.85.18.51's password:
+```
+
+After successful execution, the public key will be copied to all managed nodes.
+
+---
+
+### Verify Passwordless SSH Login
+
+Try connecting to any server:
+
+```bash
+ssh ansible@3.85.18.51
+```
+
+You should be logged in without entering a password.
+
+---
+
+## 🚀 Run Ansible Without Password Prompt
+
+Now that SSH key-based authentication is configured, you can execute Ansible commands without the `-k` option.
+
+```bash
+ansible all -i inventory.ini -m ping -u ansible
+```
+
+Expected output:
+
+```text
+web1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+web2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+db1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+db2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+✅ Congratulations! You have successfully configured Ansible with SSH key-based authentication and can now manage all servers without entering a password each time.
+
+---
+
 ## 🚀 Future Enhancements
 
 - Ansible Roles
