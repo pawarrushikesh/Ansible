@@ -400,7 +400,7 @@ The `command` module is more secure than `shell` because it does not process she
 Check or manage services on remote hosts.
 
 ```bash
-ansible all -i inventory.ini -m service -a "name=httpd"
+ansible all -i inventory.ini -m package -a "name=httpd state=present"  -u ansible -b
 ```
 
 Start a service:
@@ -439,6 +439,22 @@ Verify the file:
 
 ```bash
 ansible all -i inventory.ini -m shell -a "ls -l /tmp/testfile"
+```
+
+Copy the file:
+
+```bash
+ansible all -i inventory.ini -m copy -a "src=/tmp/app.sh dest=/tmp/app" -u ansible
+```
+User create:
+
+```bash
+ansible all -i inventory.ini -m user -a "name=devops state=present"  -u ansible -b
+```
+print message
+
+```bash
+ansible all -i inventory.ini -m debug -a "msg='hello rk'"   -u ansible 
 ```
 
 ---
