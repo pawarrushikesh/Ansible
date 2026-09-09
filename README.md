@@ -247,7 +247,7 @@ db2 | SUCCESS => {
 Generate an SSH key pair:
 
 ```bash
-ssh-keygen
+ssh-keygen -t rsa -b 4096
 ```
 
 When prompted, simply press **Enter** three times:
@@ -293,7 +293,7 @@ Save and exit the file.
 ### Give Execute Permission
 
 ```bash
-chmod 777 ssh-copy-id.sh
+chmod +x ssh-copy-id.sh 
 ```
 
 ---
