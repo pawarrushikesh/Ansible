@@ -1,0 +1,12 @@
+---
+- name: cat file
+  hosts: all
+  become: true
+  tasks:
+    - name: check file info
+      shell: cat /etc/environment
+      register: cat_file
+
+    - name: print file
+      debug:
+        var: cat_file.stdout
