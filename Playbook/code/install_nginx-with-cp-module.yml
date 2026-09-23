@@ -1,0 +1,21 @@
+---
+- name: install and start nginx on web server
+  hosts: webserver
+  become: true
+
+  tasks:
+    - name: install nginx
+      package:
+        name: nginx
+        state: present
+
+    - name: start and enabled nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create a custome index page
+      copy:
+        content: "<h1> Deployed by ansible</h1>"
+        dest: /usr/share/nginx/html/index.html

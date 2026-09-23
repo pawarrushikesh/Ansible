@@ -1,0 +1,12 @@
+---
+- name: create application directory
+  hosts: all
+  become: true
+
+  tasks:
+    - name: create directory
+      file:
+         path: /opt/myapp
+         state: directory
+         owner: ansible
+         mode: '0755'

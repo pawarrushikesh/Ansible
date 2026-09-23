@@ -1,0 +1,13 @@
+---
+- name: copy config file
+  hosts: web1
+  become: true
+
+  tasks:
+    - name: copy file src to dest
+      copy:
+        src: text.txt
+        dest: /home/ansible/
+        owner: ansible
+        group: ansible
+        mode: '0644'

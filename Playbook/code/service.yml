@@ -1,0 +1,15 @@
+---
+- name: Ensure httpd running
+  hosts: webserver
+  become: true
+  tasks:
+    - name: start httpd
+      service:
+       name: httpd  
+       state: restarted
+       enabled: true
+
+    - name: stop  nginx
+      service:
+        name: nginx
+        state: stopped
