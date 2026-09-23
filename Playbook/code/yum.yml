@@ -1,0 +1,10 @@
+---
+- name: Install multiple packages
+  hosts: webserver
+  become: true
+  tasks:
+    - name: Install packages
+      yum:
+        name:
+          - httpd
+        state: present

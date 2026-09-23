@@ -1,0 +1,12 @@
+---
+- name: count running process
+  hosts: all
+  become: true
+  tasks:
+    - name: count running process
+      shell: ps aux | wc -l
+      register: process_count
+
+    - name: show process count
+      debug:
+        msg: "total process: {{process_count.stdout}}"
